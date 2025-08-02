@@ -1,0 +1,217 @@
+/* 引入霞鹜文楷字体 */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css');
+
+/* 重置基础样式，确保应用可见 */
+:root {
+  --primary-color: #3498db;
+  --background-color: #f5f7fa;
+  --card-color: #ffffff;
+  --text-color: #3c4858;
+  --text-secondary: #8492a6;
+  --border-color: #e0e6ed;
+
+  /* 默认浅色主题变量 */
+  --primary-light: #5dade2;
+  --primary-rgb: 52, 152, 219;
+  /* 用于 rgba */
+  --secondary-color: #2ecc71;
+
+  --success-color: #27ae60;
+  --success-rgb: 39, 174, 96;
+  --danger-color: #e74c3c;
+  --danger-rgb: 231, 76, 60;
+  --warning-color: #f39c12;
+  --warning-rgb: 243, 156, 18;
+  --info-color: #3498db;
+  /* 通常与 primary-color 相同 */
+  --info-rgb: 52, 152, 219;
+
+  --transition-speed: 0.2s;
+  /* 用于过渡效果 */
+
+  /* 字体设置 */
+  --font-family: 'LXGW WenKai Screen', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --border-radius: 4px;
+
+  /* 图标颜色变量 */
+  --icon-color: #3c4858;
+  --icon-primary: #3498db;
+  --icon-secondary: #8492a6;
+
+  /* 其他可能的变量 */
+  --button-text-color: var(--text-on-primary);
+  --button-primary-bg: var(--primary-color);
+  --button-primary-hover-bg: var(--primary-light);
+
+  --input-bg: var(--card-color);
+  --input-border: var(--border-color);
+  --input-focus-border: var(--primary-color);
+  --input-text-color: var(--text-color);
+  --placeholder-color: var(--text-secondary);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* 防止页面级别的滚动条 */
+}
+
+#app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* 确保输入框元素也使用同样的字体和基本样式 */
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-family);
+  border: 1px solid var(--input-border);
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  background-color: var(--input-bg);
+  color: var(--input-text-color);
+  transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-color);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+button {
+  cursor: pointer;
+  background-color: var(--button-primary-bg);
+  color: var(--button-text-color);
+  border-color: var(--primary-color);
+  /* 通常按钮边框与背景同色或透明 */
+}
+
+button:hover {
+  background-color: var(--button-primary-hover-bg);
+}
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+  /* 确保 padding 和 border 不会增加元素的总宽度 */
+  /* 统一表单控件间距 */
+}
+
+.card {
+  background-color: var(--card-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.btn {
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  border: none;
+  font-weight: 500;
+  transition: background-color var(--transition-speed), color var(--transition-speed), opacity var(--transition-speed);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-primary:disabled {
+  background-color: var(--primary-light);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  /* 或者用 var(--card-color) 和 var(--text-color) for border */
+  color: var(--text-on-primary);
+  /* 假设 secondary 也是深色背景 */
+  /* border: 1px solid var(--secondary-color); */
+}
+
+.btn-secondary:hover {
+  opacity: 0.8;
+}
+
+/* 辅助类 */
+.text-danger {
+  color: var(--danger-color);
+}
+
+.text-success {
+  color: var(--success-color);
+}
+
+.text-warning {
+  color: var(--warning-color);
+}
+
+.text-info {
+  color: var(--info-color);
+}
+
+/* 确保链接颜色也使用变量 */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Firefox 滚动条样式 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) var(--background-color);
+}
