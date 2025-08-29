@@ -1,0 +1,24 @@
+name: Release Clear Desktop
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload clear-desktop.exe to Release
+      - name: Upload executables to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            web/src-tauri/target/release/bundle/nsis/clear-desktop.exe
+            web/src-tauri/target/release/bundle/nsis/clear-desktop_0.1.0_x64-setup.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

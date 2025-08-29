@@ -20,7 +20,9 @@ export const useTaskStore = defineStore('task', () => {
   const loading = ref(false)
   const currentPage = ref(1)
   const totalPages = ref(1)
-  const itemsPerPage = 3
+  // 每页条数可配置，默认从本地存储读取，回退到5
+  const persistedPageSize = localStorage.getItem('task.pageSize')
+  const pageSize = ref(persistedPageSize ? parseInt(persistedPageSize) : 5)
   const selectedCategoryId = ref<string | number | undefined>(undefined)
   const selectedStatus = ref<number | undefined>(undefined)
   const selectedStartDate = ref<string | undefined>(undefined) // 新增：开始日期筛选
@@ -50,7 +52,7 @@ export const useTaskStore = defineStore('task', () => {
     try {
       const response = await api.getTasks(
         currentPage.value,
-        itemsPerPage,
+        pageSize.value,
         selectedCategoryId.value,
         selectedStatus.value,
         selectedStartDate.value, // 传递开始日期
@@ -151,13 +153,16 @@ export const useTaskStore = defineStore('task', () => {
       tasks.value = tasks.value.filter(t => t.id !== taskId)
 
       // 如果删除后当前页任务数小于设定值且不是最后一页，需获取下一页的一条数据
-      if (tasks.value.length < itemsPerPage && currentPage.value < totalPages.value) {
+      if (tasks.value.length < pageSize.value && currentPage.value < totalPages.value) {
         // 只需要一次网络请求，获取下一页第一条数据
         const nextPageData = await api.getTasks(
           currentPage.value + 1,
           1, // 只需要一条数据
           selectedCategoryId.value,
-          selectedStatus.value
+          selectedStatus.value,
+          selectedStartDate.value,
+          selectedEndDate.value,
+          searchKeyword.value
         )
 
         // 如果有数据，添加到当前页
@@ -205,6 +210,27 @@ export const useTaskStore = defineStore('task', () => {
   function prevPage() {
     if (currentPage.value > 1) {
       currentPage.value--
+      fetchTasks()
+    }
+  }
+
+  // 新增：跳转到指定页
+  function goToPage(page: number) {
+    const targetPage = Math.max(1, Math.min(page, totalPages.value))
+    if (targetPage !== currentPage.value) {
+      currentPage.value = targetPage
+      fetchTasks()
+    }
+  }
+
+  // 新增：设置每页条数
+  function setPageSize(size: number) {
+    // 限制范围在 1-200 之间
+    const validSize = Math.max(1, Math.min(200, Math.floor(size)))
+    if (validSize !== pageSize.value && validSize > 0) {
+      pageSize.value = validSize
+      localStorage.setItem('task.pageSize', validSize.toString())
+      currentPage.value = 1 // 重置到第一页
       fetchTasks()
     }
   }
@@ -275,6 +301,7 @@ export const useTaskStore = defineStore('task', () => {
     loading,
     currentPage,
     totalPages,
+    pageSize,
     pendingTasks,
     completedTasks,
     totalCompletedTasks,
@@ -292,6 +319,8 @@ export const useTaskStore = defineStore('task', () => {
     toggleTaskCompletion,
     nextPage,
     prevPage,
+    goToPage,
+    setPageSize,
     getTaskById,
     setCategory,
     setStatus,
