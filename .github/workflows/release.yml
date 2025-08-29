@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: web
+
+      - name: Build tauri app
+        run: pnpm run tauri build
+        working-directory: web
+
       - name: Upload executables to Release
         uses: softprops/action-gh-release@v1
         with:
